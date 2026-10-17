@@ -1,0 +1,4 @@
+const CACHE="lifedesk-v1",SHELL=["/","/index.html","/manifest.webmanifest","/favicon.svg"];
+self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)));self.skipWaiting()});
+self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
+self.addEventListener("fetch",e=>{if(e.request.method==="GET")e.respondWith(fetch(e.request).then(r=>{let c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match("/index.html"))));else if(new URL(e.request.url).pathname.startsWith("/api/"))e.respondWith(fetch(e.request.clone()).catch(async()=>{let c=await caches.open("lifedesk-writes");await c.put(`/queued/${Date.now()}`,new Response(await e.request.clone().text()));return new Response('{"queued":true}',{status:202})}))});

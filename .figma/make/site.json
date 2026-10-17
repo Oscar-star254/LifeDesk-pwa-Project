@@ -1,0 +1,10 @@
+{
+  "description": "Manage your life effortlessly with a personal platform for schedules, finances, goals, and academics, designed for users seeking organization and clarity.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
